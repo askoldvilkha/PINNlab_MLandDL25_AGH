@@ -3,9 +3,8 @@ This repo contains a simple PINN model with various tests. Completed as a projec
 
 Contents:
 
-* `pinn_lib.py` - source code with a PINN model. Designed to solve ODEs with 1 initial condition; however, still capable of solving 2nd and 3rd order ODEs, with just 1 initial condition.
-  I. e. PINN model will not break and still produce a solution, but the accuracy may be worse. The model can be modified to include more boundary conditions in the future.
-  In this version, the simplest architecture is adopted in order to focus on the efficiency testing of the building components (activation functions, optimizers, number of neurons per layer, etc).
+* `pinn_lib.py` - source code with a PINN model. Designed to solve ODEs with initial conditions up to 2nd order derivative; is capable of solving 1st, 2nd and 3rd order ODEs.
+  The simplest architecture is adopted in order to focus on the efficiency testing of the building components (activation functions, optimizers, number of neurons per layer, etc).
   Components:
   1) `PINN` class - Physics Informed Neural Network, requires the list with the number of neurons in each layer (`[1, 25, 25, 1]` will create a neural network with 2 hidden layers, 25 neurons each).
   The user can also input an activation function of their choice (default is `tanh`). Native support for `tanh`, `sin`, `sigmoid`, `relu`, `softplus`. 
@@ -18,6 +17,8 @@ Contents:
   3) `train` method - performs training of the PINN model. Requires as input `TrainParams` like object, `ode_residual` function (defined for the ODE equation).
      Performs training for: 2500 epochs (`flash`), 10000 epochs (`standard`), 30000 epochs (`long`).
      Outputs the timing of the training and can save results if requested by the user.
+  4) `traindx` method - same structure as `train`, but allows to provide 1st (required) and 2nd order derivative initial conditions. 
+   Is a separate method from `train` to ensure that performance tests focus on the architechture or optimizer/activation function effects but not the complexity of the equation solved. 
 
 * `start.ipynb` - Jupyter notebook with some initial source code similar to or the same as in `pinn_lib.py`.
   Should be used as a testing ground for the PINN architecture modifications or any additions to the source code before deploying.
